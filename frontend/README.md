@@ -1,4 +1,4 @@
-# geo-puerto-montt
+# Frontend
 
 ## Project setup
 ```
