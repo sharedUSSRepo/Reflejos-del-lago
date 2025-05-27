@@ -1,5 +1,15 @@
 <template>
-  <View360 v-if="imgExists" :projection="projection" />
+  <View360
+    v-if="imgExists"
+    :projection="projection"
+    :rotate="false"
+    :autoplay="{ 
+      speed: 0.4,               // positive = clockwise, negative = CCW
+      delay: 0,               // ms before start; 0 = immediate
+      pauseOnHover: false     // keep spinning even if the mouse is over it
+    }"
+    canvasClass="w-full h-full"
+  />
 </template>
 
 <script setup>
