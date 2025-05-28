@@ -8,16 +8,38 @@
     <img src="https://github.com/sharedUSSRepo/Reflejos-del-lago/actions/workflows/tests.yml/badge.svg" alt="Badge of tests">
 </div>
 
-**Reflejos del lago** is a Geoguessr game of the province of Llanquihue. Developed in college.
+**Reflejos del lago** is a Geoguessr game of the province of Llanquihue. Try to guess where you are looking just to a photo. Is it on Puerto Varas?, Puerto Montt? or maybe Llanquihue? Try your best to make the best score you can!
 
 ## Install
+
+## Locally
+First, clone the repository
+```bash
+https://github.com/sharedUSSRepo/Reflejos-del-lago.git
+```
+
+then go to `frontend` and install the dependencies. Make sure you have `pnpm` installed. And do
+```bash
+pnpm install
+```
+
+then, to run the app, do:
+```bash
+pnpm run serve
+```
 ### Docker
-build
+To install this project using docker, first, clone the repo and build the docker:
 ```bash
 docker build -t reflejos-del-lago .
 ```
 
-run
+Then, run the docker.
 ```bash
 docker run --rm -p 8080:8080 reflejos-del-lago
 ```
+
+If you want to download the from Dockerhub, you can click [here](https://hub.docker.com/repository/docker/teg57/reflejos-del-lago/)
+
+## Authors
+- @[AlanSilvaaa](https://github.com/AlanSilvaaa)
+- @[Vinbu](https://github.com/Vinbu)
