@@ -35,7 +35,14 @@ jobs:
           git add dist -f
           git commit -m "add dist" || echo "No changes to commit"
 
-      - name: Push to gh-pages via subtree
+      - name: Set up SSH
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.PUSH_ACCESS }}@github.com/${{ github.repository }}
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Push to gh-pages via git subtree (SSH)
+        run: |
+          git remote set-url origin git@github.com:${{ github.repository }}.git
           git subtree push --prefix frontend/dist origin gh-pages
