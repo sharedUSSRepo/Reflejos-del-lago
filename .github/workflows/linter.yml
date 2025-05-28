@@ -10,4 +10,4 @@ jobs:
                 node-version: '12.x'
             - run: npm install -g pnpm@latest-10
             - run: cd frontend && pnpm install
-            - run: cd frontend && pnpm run lint
+            - run: pnpm run lint
