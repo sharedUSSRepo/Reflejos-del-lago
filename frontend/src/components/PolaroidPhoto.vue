@@ -42,7 +42,7 @@ const { play: hoverCardSound } = useSound(hover_card, { volume: 0.5 });
 
 
 function handlePlayGame() {
-  emit("playGame", "Test message");
+  emit("playGame", front.value.title);
 }
 
 function hoverCard() {
