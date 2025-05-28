@@ -5,6 +5,7 @@
 <div align=center>
     <img src="https://github.com/sharedUSSRepo/Reflejos-del-lago/actions/workflows/dockerhub.yml/badge.svg" alt="Badge of dockerhub">
     <img src="https://github.com/sharedUSSRepo/Reflejos-del-lago/actions/workflows/linter.yml/badge.svg" alt="Badge of linter">
+    <img src="https://github.com/sharedUSSRepo/Reflejos-del-lago/actions/workflows/tests.yml/badge.svg" alt="Badge of tests">
 </div>
 
 **Reflejos del lago** is a Geoguessr game of the province of Llanquihue. Developed in college.
