@@ -25,7 +25,12 @@ jobs:
 
       - name: Build frontend
         working-directory: frontend
-        run: pnpm run build
+        env:
+          VUE_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.VUE_APP_GOOGLE_MAPS_API_KEY }}
+          VUE_APP_GOOGLE_MAP_ID: ${{ secrets.VUE_APP_GOOGLE_MAP_ID }}
+        run: |
+          echo "Building with map ID: $VUE_APP_GOOGLE_MAP_ID"
+          pnpm run build
 
       - name: Commit dist folder
         working-directory: frontend
