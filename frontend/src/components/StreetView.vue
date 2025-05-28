@@ -4,12 +4,14 @@ import { onMounted, ref } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
 import { GoogleMap } from 'vue3-google-map';
 import { Button } from 'primevue';
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const apiKey = process.env.VUE_APP_GOOGLE_MAPS_API_KEY;
 const center_minimap = { lat: -41.333333333333, lng: -72.833333333333 };
 const router = useRouter()
-
+const route = useRoute()
+const round = ref(parseInt(route.query.round) || 1);
+const score = ref(parseInt(route.query.score) || 0)
 const locations = {
   1: [-41.45099080993633, -72.91137907054409],
   2: [-41.459644059180015, -72.93679177759618],
@@ -71,7 +73,7 @@ const getRandomId = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min
 }
 
-const randomId = getRandomId(1,27)
+const randomId = getRandomId(1,50)
 
 const center = { lat: (locations[randomId])[0], lng: (locations[randomId])[1] };
 
@@ -145,6 +147,11 @@ onMounted(() => {
   }, 200)
 })
 
+if (round.value < 1){
+  round.value = 1
+}
+
+console.log("Round value: " + round.value)
 function handleGuess() {
   console.log("clickedPosition:", clickedPosition.value);
 
@@ -153,10 +160,10 @@ function handleGuess() {
     return;
   }
 
-  Results(clickedPosition.value, center);
+  Results(clickedPosition.value, center, round.value);
 }
 
-function Results(position, realPosition) {
+function Results(position, realPosition, round) {
   router.push({
     path: "/ResultsScreen",
     query: {
@@ -164,6 +171,8 @@ function Results(position, realPosition) {
       miniLng : position?.lng ?? 0,
       realLat: realPosition.lat,
       realLng: realPosition.lng,
+      round: round,
+      score: score.value,
     }
     });
 }
