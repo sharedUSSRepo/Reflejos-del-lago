@@ -12,7 +12,7 @@
 
 ## Install
 
-## Locally
+### Locally
 First, clone the repository
 ```bash
 https://github.com/sharedUSSRepo/Reflejos-del-lago.git
