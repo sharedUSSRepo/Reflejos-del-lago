@@ -1,0 +1,42 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - '**'  # Trigger on all branches
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm@latest-10
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: pnpm install
+
+      - name: Build frontend
+        working-directory: frontend
+        run: pnpm run build
+
+      - name: Commit dist folder
+        working-directory: frontend
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist -f
+          git commit -m "add dist" || echo "No changes to commit"
+
+      - name: Push to gh-pages via subtree
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.PUSH_ACCESS }}@github.com/${{ github.repository }}
+          git subtree push --prefix frontend/dist origin gh-pages
