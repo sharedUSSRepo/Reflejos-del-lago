@@ -45,4 +45,4 @@ jobs:
       - name: Push to gh-pages via git subtree (SSH)
         run: |
           git remote set-url origin git@github.com:${{ github.repository }}.git
-          git subtree push --prefix frontend/dist origin gh-pages
+          git push origin `git subtree split --prefix frontend/dist HEAD`:gh-pages --force
