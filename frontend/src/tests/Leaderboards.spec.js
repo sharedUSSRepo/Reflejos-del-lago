@@ -1,4 +1,4 @@
-// tests/leaderboard.spec.js
+/* eslint-disable */
 import { leaderboard } from '@/data/leaderboard'
 
 describe('leaderboard data shape', () => {

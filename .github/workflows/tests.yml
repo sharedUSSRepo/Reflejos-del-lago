@@ -9,4 +9,5 @@ jobs:
               with:
                 node-version: '18.x'
             - run: npm install -g pnpm@latest-10
+            - run: pnpm install
             - run: cd frontend && pnpm run test:unit
