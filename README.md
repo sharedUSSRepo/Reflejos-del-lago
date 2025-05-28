@@ -3,3 +3,15 @@
 </div>
 
 **Reflejos del lago** is a Geoguessr game of the province of Llanquihue. Developed in college.
+
+## Install
+### Docker
+build
+```bash
+docker build -t reflejos-del-lago .
+```
+
+run
+```bash
+docker run --rm -p 8080:8080 reflejos-del-lago
+```
