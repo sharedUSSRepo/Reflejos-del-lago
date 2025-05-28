@@ -9,5 +9,7 @@ jobs:
               with:
                 node-version: '18.x'
             - run: npm install -g pnpm@latest-10
-            - run: cd frontend && pnpm install
-            - run: cd frontend && pnpm run lint
+              working-directory: frontend
+              run: | 
+                pnpm install
+                pnpm run lint
