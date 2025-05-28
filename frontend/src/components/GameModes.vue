@@ -37,9 +37,11 @@ const currentCenterCard = ref(1);
 
 const { play: flipCard } = useSound(flip_card);
 
-function PlayGame(message) {
-    console.log(message);
-  router.push("/PlayGame");
+function PlayGame(gamemode) {
+    console.log(gamemode);
+  router.push({
+    path: "/PlayGame",
+    query: {gamemode: gamemode}});
 }
 
 onMounted(() => {

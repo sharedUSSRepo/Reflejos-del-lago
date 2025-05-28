@@ -10,8 +10,11 @@ const apiKey = process.env.VUE_APP_GOOGLE_MAPS_API_KEY;
 const center_minimap = { lat: -41.333333333333, lng: -72.833333333333 };
 const router = useRouter()
 const route = useRoute()
-const round = ref(parseInt(route.query.round) || 1);
+const round = ref(parseInt(route.query.round) || 1)
 const score = ref(parseInt(route.query.score) || 0)
+const gamemode = ref(route.query.gamemode)
+console.log(gamemode)
+
 const locations = {
   1: [-41.45099080993633, -72.91137907054409],
   2: [-41.459644059180015, -72.93679177759618],
@@ -77,7 +80,9 @@ const randomId = getRandomId(1,50)
 
 const center = { lat: (locations[randomId])[0], lng: (locations[randomId])[1] };
 
-onMounted(async () => {
+//Verify Gamemode:
+if(gamemode.value == "Sin movimiento") {
+  onMounted(async () => {
   const loader = new Loader({
     apiKey: apiKey,
     version: "weekly",
@@ -92,12 +97,34 @@ onMounted(async () => {
     addressControl: false,
     disableDefaultUI: true,
     showRoadLabels: false,
-    // Unable camera movement
-    // clickToGo: false,
-    // linksControl: false,
-    // panControl: false,
+    clickToGo: false,
+    linksControl: false,
+    panControl: false,
   });
 });
+}
+
+else {
+  console.log("Gamemode dentro de verificacion else:" +gamemode.value)
+  onMounted(async () => {
+  const loader = new Loader({
+    apiKey: apiKey,
+    version: "weekly",
+  });
+
+  await loader.load();
+
+  new google.maps.StreetViewPanorama(document.getElementById("street-view"), {
+    position: center,
+    pov: { heading: 165, pitch: 0 },
+    zoom: 1,
+    addressControl: false,
+    disableDefaultUI: true,
+    showRoadLabels: false,
+  });
+});
+}
+
 
 const opacityValue = ref(0.5);
 const heightValue = ref("250px");
