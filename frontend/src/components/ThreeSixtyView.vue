@@ -4,9 +4,9 @@
     :projection="projection"
     :rotate="false"
     :autoplay="{ 
-      speed: 0.4,               // positive = clockwise, negative = CCW
-      delay: 0,               // ms before start; 0 = immediate
-      pauseOnHover: false     // keep spinning even if the mouse is over it
+      speed: 0.4,
+      delay: 0,
+      pauseOnHover: false
     }"
     canvasClass="w-full h-full"
   />
@@ -16,27 +16,23 @@
 import { View360, EquirectProjection } from "@egjs/vue3-view360";
 import { defineProps, ref, onMounted } from "vue";
 
-const props = defineProps(["image"]);
-const imgExists = ref(false);
-
-const imageSrc = `/dataset/${props.image}.jpg`;
-const projection = new EquirectProjection({
-  src: imageSrc,
+const props = defineProps({
+  image: String,
 });
 
-/**
- * Check if the image exists
- * @param {string} imageSrc - The source of the image
- */
+const imgExists = ref(false);
+
+const imageSrc = require(`@/assets/images/backgrounds/${props.image}.jpg`);
+
+const projection = new EquirectProjection({ src: imageSrc });
+
 onMounted(() => {
   const img = new Image();
   img.src = imageSrc;
-  img.onload = () => {
-    imgExists.value = true;
-  };
+  img.onload = () => (imgExists.value = true);
   img.onerror = () => {
     imgExists.value = false;
-    console.log(`Image not found: ${imageSrc}`);
+    console.error(`Image not found: ${imageSrc}`);
   };
 });
 </script>
