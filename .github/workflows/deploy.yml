@@ -1,8 +1,7 @@
 name: Deploy
 on:
-  push:
-    branches:
-      - '**'  # Trigger on all branches
+  release:
+    types: [published]
 
 jobs:
   build-and-deploy:
