@@ -14,6 +14,7 @@
             <GameModes class="mt-7" />
         </div>
     </div>
+    <ProvinceOfLlanquihue></ProvinceOfLlanquihue>
     <div class="mx-24">
         <h1 class="text-center text-4xl font-minecraft mt-4">Bienvenido</h1>
         <div class="grid grid-cols-2 gap-4 justify-items-center">
@@ -140,6 +141,7 @@
 
 <script setup>
 import GameModes from '@/components/GameModes.vue';
+import ProvinceOfLlanquihue from '@/components/ProvinceOfLlanquihue.vue';
 import Card from 'primevue/card';
 import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
