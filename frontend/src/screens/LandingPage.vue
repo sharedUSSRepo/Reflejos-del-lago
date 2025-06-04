@@ -3,7 +3,7 @@
     <div class="relative min-h-screen">
 
         <!-- 360° background -->
-        <ThreeSixtyView image="example3" class="absolute inset-0 pointer-events-none w-full h-full opacity-50"/>
+        <ThreeSixtyView image="example3" class="absolute inset-0 pointer-events-none w-full h-full opacity-50" />
 
         <!-- HEADER: top-aligned, but centered logo & text -->
         <div class="relative z-10 bg-transparent pt-8 px-8 text-center">
@@ -14,14 +14,16 @@
             <GameModes class="mt-7" />
         </div>
     </div>
-    <ProvinceOfLlanquihue></ProvinceOfLlanquihue>
     <div class="mx-24">
         <h1 class="text-center text-4xl font-minecraft mt-4">Bienvenido</h1>
         <div class="grid grid-cols-2 gap-4 justify-items-center">
             <!-- First element -->
             <Card style="width: 25rem; overflow: hidden">
                 <template #header>
-                    <img alt="user header" src="../assets/images/landingPage/card.jpg" />
+                    <div class="h-96 w-96">
+                        <ProvinceOfLlanquihue></ProvinceOfLlanquihue>
+                    </div>
+                    <!-- <img alt="user header" src="../assets/images/landingPage/card.jpg" /> -->
                 </template>
                 <template #title>Reflejos del Lago</template>
                 <template #subtitle>Explora la provincia</template>
