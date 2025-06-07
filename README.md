@@ -3,10 +3,10 @@
 </div>
 
 <div align=center>
-    <img src="https://github.com/sharedUSSRepo/Reflejos-del-lago/actions/workflows/dockerhub.yml/badge.svg" alt="Badge of dockerhub">
-    <img src="https://github.com/sharedUSSRepo/Reflejos-del-lago/actions/workflows/linter.yml/badge.svg" alt="Badge of linter">
-    <img src="https://github.com/sharedUSSRepo/Reflejos-del-lago/actions/workflows/tests.yml/badge.svg" alt="Badge of tests">
-    <img src="https://github.com/sharedUSSRepo/Reflejos-del-lago/actions/workflows/deploy.yml/badge.svg" alt="Badge of deploy">
+    <img src="https://img.shields.io/github/actions/workflow/status/sharedUSSRepo/Reflejos-del-lago/dockerhub.yml?logo=docker&label=Dockerhub" alt="Badge of dockerhub">
+    <img src="https://img.shields.io/github/actions/workflow/status/sharedUSSRepo/Reflejos-del-lago/linter.yml?logo=eslint&label=Linter" alt="Badge of linter">
+    <img src="https://img.shields.io/github/actions/workflow/status/sharedUSSRepo/Reflejos-del-lago/tests.yml?logo=jest&label=Tests" alt="Badge of tests">
+    <img src="https://img.shields.io/github/actions/workflow/status/sharedUSSRepo/Reflejos-del-lago/deploy.yml?logo=iCloud&label=Deploy" alt="Badge of deploy">
 </div>
 
 **Reflejos del lago** is a Geoguessr game of the province of Llanquihue. Try to guess where you are looking just to a photo. Is it on Puerto Varas?, Puerto Montt? or maybe Llanquihue? Try your best to make the best score you can!
