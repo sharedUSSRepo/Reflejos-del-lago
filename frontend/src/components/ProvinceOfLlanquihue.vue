@@ -98,7 +98,7 @@ const FresiaOutline = Fresia.map((ring) => ({
 
 <template>
   <GoogleMap :api-key="api_key" :disable-default-ui="true" style="width: 100%; height: 100%" :center="center" :zoom="7">
-    <Polygon v-for="(opts, idx) in PuertoVarasOutline" :key="idx" :options="opts" />
+    <Polygon v-for="(opts, idx) in PuertoVarasOutline" :key="idx" :options="opts" @mouseover="(e, poly) => console.log('this is e: ', e, 'and this poly: ', poly)"/>
     <Polygon v-for="(opts, idx) in FrutillarOutline" :key="idx" :options="opts" />
     <Polygon v-for="(opts, idx) in LlanquihueOutline" :key="idx" :options="opts" />
     <Polygon v-for="(opts, idx) in MaullinOutline" :key="idx" :options="opts" />
