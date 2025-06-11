@@ -12,7 +12,8 @@ const ProvinciaDeLlanquihueOutline = ProvinciaDeLlanquihue.map((ring) => ({
   strokeOpacity: 0.8,
   strokeWeight: 2,
   fillColor: '#FF0000',
-  fillOpacity: 0
+  fillOpacity: 0,
+  clickable: false
 }))
 
 const apiKey = process.env.VUE_APP_GOOGLE_MAPS_API_KEY
