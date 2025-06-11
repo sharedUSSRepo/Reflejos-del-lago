@@ -2,9 +2,20 @@
 /* global google */
 import { onMounted, ref } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
-import { GoogleMap } from 'vue3-google-map';
+import { GoogleMap, Polygon } from 'vue3-google-map';
 import { Button } from 'primevue';
 import { useRoute, useRouter } from 'vue-router'
+import ProvinciaDeLlanquihue from '@/data/boundaries/ProvinciaDeLlanquihue.json'
+
+const ProvinciaDeLlanquihueOutline = ProvinciaDeLlanquihue.map((ring) => ({
+  paths: ring,
+  strokeColor: '#FF0000',
+  strokeOpacity: 0.8,
+  strokeWeight: 2,
+  fillColor: '#FF0000',
+  fillOpacity: 0,
+  clickable: false
+}))
 
 const apiKey = process.env.VUE_APP_GOOGLE_MAPS_API_KEY;
 const center_minimap = { lat: -41.333333333333, lng: -72.833333333333 };
@@ -229,6 +240,7 @@ function Results(position, realPosition, round) {
         :zoom="7"
         :disable-default-ui="true"
       >
+         <Polygon v-for="(opts, idx) in ProvinciaDeLlanquihueOutline" :key="idx" :options="opts" />
       </GoogleMap>
       <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-50">
         <Button @click="handleGuess" severity="success" raised>Adivinar</Button>
