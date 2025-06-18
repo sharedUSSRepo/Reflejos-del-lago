@@ -14,6 +14,8 @@
             <GameModes class="mt-7" />
         </div>
     </div>
+
+    <!-- Welcome -->
     <div class="mx-24">
         <h1 class="text-center text-4xl font-minecraft mt-4">Bienvenido</h1>
         <div class="grid grid-cols-2 gap-4 justify-items-center">
@@ -35,23 +37,21 @@
                         cordillera de los Andes.
                     </p>
                 </template>
-                <template #footer>
-                    <div class="flex gap-4 mt-1">
-                        <Button label="Cancel" severity="secondary" outlined class="w-full" />
-                        <Button label="Save" class="w-full" />
-                    </div>
-                </template>
             </Card>
 
             <!-- Second element -->
             <DataTable :value="leaderboard" class="w-full">
-                <template #paginatorstart>
-                    <Button type="button" icon="pi pi-refresh" text />
+                <template #header>
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="text-xl font-bold">Tabla de clasificaciones</span>
+                        <Button @click="loadLeaderboard" icon="pi pi-refresh" rounded raised />
+                    </div>
                 </template>
-                <template #paginatorend>
-                    <Button type="button" icon="pi pi-download" text />
-                </template>
-                <Column field="rank" header="Rango"></Column>
+                <Column header="">
+                    <template #body="slotProps">
+                        {{ slotProps.index + 1 }}
+                    </template>
+                </Column>
                 <Column field="username" header="Nombre"></Column>
                 <Column field="score" header="Puntaje"></Column>
                 <Column field="total_plays" header="Partidas jugadas"></Column>
@@ -146,13 +146,29 @@ import GameModes from '@/components/GameModes.vue';
 import ProvinceOfLlanquihue from '@/components/ProvinceOfLlanquihue.vue';
 import Card from 'primevue/card';
 import Accordion from 'primevue/accordion';
+import Button from 'primevue/button';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { leaderboard } from '@/data/leaderboard';
+// import { leaderboard } from '@/data/leaderboard';
 import ThreeSixtyView from '../components/ThreeSixtyView.vue'
+import axios from 'axios'
+import { ref, onMounted } from 'vue';
 // import ColumnGroup from 'primevue/columngroup';   // optional
 // import Row from 'primevue/row';   
+
+let leaderboard = ref([])
+
+onMounted(() => {
+    loadLeaderboard();
+});
+
+let loadLeaderboard = function () {
+    console.log('Loading leaderboard...');
+    axios.get('http://localhost:3000/leaderboard').then(response => {
+        leaderboard.value = response.data.users;
+    })
+}
 </script>
