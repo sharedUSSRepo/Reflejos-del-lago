@@ -5,17 +5,18 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // Load 
 var mongodb = require("./mongodb.js");
 var user = require("../schemas/leaderboard.js");
 
-const data = [{ username: "alan", score: 10, total_plays: 2, average_score: 5 },
+const user_data = [{ username: "alan", score: 10, total_plays: 2, average_score: 5 },
 { username: "dante", score: 20, total_plays: 999, average_score: 5 },
 { username: "vincent", score: 30, total_plays: 6, average_score: 5 }
 ];
+
 
 mongodb();
 
 mongoose.connection.once("open", () => {
   async function create() {
     user.deleteMany({}).then(() => {
-      user.insertMany(data)
+      user.insertMany(user_data)
         .then(() => {
           user.find({}).then((res) => {
             console.log(res);
