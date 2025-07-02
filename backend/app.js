@@ -14,7 +14,7 @@ var usersRouter = require('./routes/users');
 var versionRouter = require('./routes/version');
 var leaderboardRouter = require('./routes/leaderboard');
 var citiesRouter = require('./routes/cities');
-var citiesCoordiantes = require('./routes/getrandomcoor');
+var getrandomcoorRouter = require('./routes/getrandomcoor');
 
 var app = express();
 
@@ -30,6 +30,6 @@ app.use('/users', usersRouter);
 app.use('/version', versionRouter);
 app.use('/leaderboard', leaderboardRouter);
 app.use('/cities', citiesRouter);
-app.use('/allcoordinates', citiesCoordiantes);
+app.use('/coordinates', getrandomcoorRouter);
 
 module.exports = app;

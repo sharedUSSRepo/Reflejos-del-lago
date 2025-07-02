@@ -33,24 +33,39 @@ function random_location(lat, lon, max_radius){
     }
 }
 
-const {lat, lon} = random_location(-41.4693, -72.94237, 15000);
-console.log(`Coordenada aleatoria: lat=${lat}, lon=${lon}`);
 
 async function checkStreetView(lat, lon) {
     const url = `https://maps.googleapis.com/maps/api/streetview/metadata?location=${lat},${lon}&radius=1000&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`;
     const response = await fetch(url);
     const data = await response.json();
     console.log(`Respuesta Street View: ${data.status}`);
-    return data.status === 'OK';
+    if (data.status === 'OK' && data.copyright.includes("Google")) {
+        return {
+            ok: true,
+            lat: data.location.lat,
+            lon: data.location.lng
+        };
+    }
+    return { ok: false };
 }
 
 async function save_true_coordinates(city, lat, lon) {
     await mongodb();
     await mongoose.connection.asPromise();
 
-    data_json = {cityname: city, latitude: lat, longitude: lon}
-    all_coordinates.create(data_json)
+    const data_json = { cityname: city, latitude: lat, longitude: lon };
+
+    try {
+        await all_coordinates.create(data_json);
+    } catch (err) {
+        if (err.code === 11000) {
+            console.warn("⚠️ Coordenada duplicada, no se guarda:", lat, lon);
+        } else {
+            throw err;
+        }
+    }
 }
+
 
 async function main() {
     await mongodb();
@@ -65,11 +80,12 @@ async function main() {
             console.log(`Ciudad: ${cityname}`);
             console.log(`→ Coordenada aleatoria: lat=${lat}, lon=${lon}`);
 
-            const tieneStreetView = await checkStreetView(lat, lon);
-            if (tieneStreetView) {
-                await save_true_coordinates(cityname, lat, lon);
+            const result = await checkStreetView(lat, lon);
+            if (result.ok) {
+                await save_true_coordinates(cityname, result.lat, result.lon);
+                console.log(`Coordenadas reales: lat=${result.lat}, lon=${result.lon}`)
             }
-            console.log(tieneStreetView ? "✅ Hay Street View\n" : "❌ No hay Street View\n");
+            console.log(result.ok ? "✅ Hay Street View\n" : "❌ No hay Street View o no pertenece a Google\n");
         }
     }
 

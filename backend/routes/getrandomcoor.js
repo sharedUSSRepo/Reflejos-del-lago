@@ -7,12 +7,22 @@ dotenv.config();
 const mongodb = require("../helpers/mongodb.js");
 const Coordinate = require("../schemas/allcoordinates.js");
 
-mongodb();
+let dbConnected = false;
 
 router.get('/', async function (req, res) {
     try {
-        const coordinates = await Coordinate.find({}).exec();
-        res.json({ coordinates });
+        if (!dbConnected) {
+            await mongodb();
+            await mongoose.connection.asPromise();
+            dbConnected = true;
+        }
+        const coordinates = await Coordinate.aggregate([{ $sample: { size: 1 } }]);
+        const { cityname, latitude, longitude } = coordinates[0];
+        res.json({ 
+            cityname,
+            lat:latitude,
+            lng:longitude
+        });
     } catch (err) {
         console.error("Error fetching users:", err);
         res.status(500).json({ error: "Internal Server Error" });

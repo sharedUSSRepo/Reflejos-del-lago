@@ -27,6 +27,7 @@ const realLat = parseFloat(route.query.realLat)
 const realLng = parseFloat(route.query.realLng)
 let round = parseFloat(route.query.round)
 let sum_score = parseInt(route.query.score)
+const timedOut = route.query.timeout === 'true'
 
 console.log("Round value in Gmaps: " + round)
 
@@ -88,6 +89,9 @@ const Score = computed(() => {
 
   const adjustedDistance = distance - threshold
   const score = maxScore * Math.exp(-k * adjustedDistance)
+  if (!timedOut) {
+    sum_score = sum_score + Score.value
+  }
 
   return Math.round(score)
 })
@@ -98,6 +102,8 @@ function NextRound() {
     query: {
       round: round + 1,
       score: sum_score,
+      gamemode: route.query.gamemode,
+      used: route.query.used
     }
   })
 }
@@ -107,6 +113,9 @@ function PlayAgain() {
   round = 0
   router.push({
     path: "/PlayGame",
+    query: {
+      gamemode: route.query.gamemode
+    }
   })
 }
 const DisplayResults = ref(false)
@@ -178,7 +187,6 @@ function BackMenu() {
       <Button label="Siguiente Ronda" @click="NextRound" v-if="round < 3" raised></Button>
       <Button label="Ver Resultados" @click="DResults" v-else raised></Button>
     </div>
-    <!-- Contenedor que centra el Card -->
     <div v-if="DisplayResults" :style="{
       position: 'absolute',
       top: '0',
@@ -188,7 +196,7 @@ function BackMenu() {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'rgba(255,255,255,0.8)', // opcional
+      backgroundColor: 'rgba(255,255,255,0.8)',
       zIndex: 20
     }">
       <Card style="width: 300px" :pt="{
