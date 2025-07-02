@@ -5,6 +5,7 @@ import { ref, onMounted, computed } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import ProvinciaDeLlanquihue from '@/data/boundaries/ProvinciaDeLlanquihue.json'
+import axios from 'axios'
 
 const ProvinciaDeLlanquihueOutline = ProvinciaDeLlanquihue.map((ring) => ({
   paths: ring,
@@ -79,7 +80,7 @@ function NextRound() {
       round: round + 1,
       gamemode: route.query.gamemode,
       used: route.query.used,
-      meters: meters.value.toFixed(2) 
+      meters: meters.value.toFixed(2)
     }
   })
 }
@@ -96,6 +97,8 @@ function PlayAgain() {
 const DisplayResults = ref(false)
 function DResults() {
   DisplayResults.value = true
+  sendGameData()
+  console.log("Enviando datos del juego...")
 }
 
 function BackMenu() {
@@ -112,6 +115,16 @@ const formattedDistance = computed(() => {
     return `${value.toFixed(2)} metros`;
   }
 });
+
+let sendGameData = function () {
+  axios.put('http://localhost:3000/saveGameData', { gamemode: route.query.gamemode, score: meters.value.toFixed(2), rounds: route.query.used }, { withCredentials: true })
+    .then(response => {
+      console.log('Type updated successfully:', response.data);
+    }).catch(err => {
+      // errorMessage.value = err.response?.data?.error || 'Error desconocido';
+      console.log('Error al enviar los datos del juego:', err);
+    });
+}
 
 
 </script>

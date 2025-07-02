@@ -18,6 +18,7 @@ var leaderboardRouter = require('./routes/leaderboard');
 var citiesRouter = require('./routes/cities');
 var landingPageRouter = require('./routes/landingPage');
 var getrandomcoorRouter = require('./routes/getrandomcoor');
+var saveGameDataRouter = require('./routes/saveGameData');
 
 var app = express();
 
@@ -50,5 +51,6 @@ app.use('/leaderboard', leaderboardRouter);
 app.use('/cities', citiesRouter);
 app.use('/landingPage', landingPageRouter);
 app.use('/coordinates', getrandomcoorRouter);
+app.use('/saveGameData', saveGameDataRouter);
 
 module.exports = app;
