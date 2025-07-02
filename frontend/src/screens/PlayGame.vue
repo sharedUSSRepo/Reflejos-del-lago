@@ -16,6 +16,8 @@ const initialCoord = ref(null);
 const reloadCounter = ref(0);
 const timeExpired = ref(false)
 const meters = ref(parseFloat(route.query.meters) || 0);
+const score = ref(parseFloat(route.query.score) || 0); 
+
 
 const countdown = ref(180)
 let countdownInterval = null
@@ -89,7 +91,8 @@ function handleGuessClick(position) {
             round: round.value,
             gamemode: gamemode.value,
             used: JSON.stringify(usedCoords.value),
-            meters: meters.value.toFixed(2)
+            meters: meters.value.toFixed(2),
+            score: score.value.toFixed(0)
             }
     });
 }
@@ -273,6 +276,3 @@ function BackToMenu() {
 
     </div>
 </template>
-
-
-

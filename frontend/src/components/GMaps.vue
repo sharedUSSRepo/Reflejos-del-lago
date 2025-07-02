@@ -28,6 +28,7 @@ const realLat = parseFloat(route.query.realLat)
 const realLng = parseFloat(route.query.realLng)
 let round = parseFloat(route.query.round)
 let meters = ref(parseFloat(route.query.meters) || 0);
+let sum_score = ref(parseFloat(route.query.score) || 0)
 
 console.log("Round value in Gmaps: " + round)
 
@@ -69,8 +70,24 @@ const Distance = computed(() => {
   return haversineDistance(miniLat, miniLng, realLat, realLng).toFixed(2)
 })
 
+
+const Score = computed(() => {
+  const distance = parseFloat(Distance.value);
+  const maxScore = 5000;
+  const threshold = 50;
+  const k = 0.0005;
+
+  if (typeof distance !== 'number' || isNaN(distance)) return 0;
+  if (distance <= threshold) return maxScore;
+
+  const adjustedDistance = distance - threshold;
+  const score = maxScore * Math.exp(-k * adjustedDistance);
+  return Math.round(score);
+});
+
 onMounted(() => {
   meters.value += Number(Distance.value)
+  sum_score.value += Score.value;
 })
 
 function NextRound() {
@@ -80,7 +97,8 @@ function NextRound() {
       round: round + 1,
       gamemode: route.query.gamemode,
       used: route.query.used,
-      meters: meters.value.toFixed(2)
+      meters: meters.value.toFixed(2),
+      score: sum_score.value.toFixed(0)
     }
   })
 }
@@ -117,7 +135,7 @@ const formattedDistance = computed(() => {
 });
 
 let sendGameData = function () {
-  axios.put('http://localhost:3000/saveGameData', { gamemode: route.query.gamemode, score: meters.value.toFixed(2), rounds: route.query.used }, { withCredentials: true })
+  axios.put('http://localhost:3000/saveGameData', { gamemode: route.query.gamemode, score: sum_score.value, rounds: route.query.used }, { withCredentials: true })
     .then(response => {
       console.log('Type updated successfully:', response.data);
     }).catch(err => {
@@ -154,6 +172,7 @@ let sendGameData = function () {
         <template #title>Puntaje</template>
         <template #content>
           <p class="m-0">Distancia: {{ Distance }}</p>
+          <p class="m-0">Punateje Ronda: {{ Score }}</p>
         </template>
       </Card>
     </div>
@@ -203,6 +222,7 @@ let sendGameData = function () {
         <template #title>Resultados Finales</template>
         <template #content>
           <p>{{ formattedDistance }}</p>
+          <p>Puntaje total: {{ sum_score }}</p>
           <div>
             <Button label="Volver a jugar" @click="PlayAgain" style="margin-top: 1rem; width: 100%;"></Button>
             <Button label="Volver al menú" @click="BackMenu" style="margin-top: 1rem; width: 100%;"></Button>
