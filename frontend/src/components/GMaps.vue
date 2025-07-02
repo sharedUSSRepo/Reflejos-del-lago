@@ -1,7 +1,7 @@
 <script setup>
 import { GoogleMap, AdvancedMarker, Polyline, Polygon } from 'vue3-google-map'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import ProvinciaDeLlanquihue from '@/data/boundaries/ProvinciaDeLlanquihue.json'
@@ -26,8 +26,7 @@ const miniLng = parseFloat(route.query.miniLng)
 const realLat = parseFloat(route.query.realLat)
 const realLng = parseFloat(route.query.realLng)
 let round = parseFloat(route.query.round)
-let sum_score = parseInt(route.query.score)
-const timedOut = route.query.timeout === 'true'
+let meters = ref(parseFloat(route.query.meters) || 0);
 
 console.log("Round value in Gmaps: " + round)
 
@@ -66,50 +65,26 @@ function haversineDistance(miniLat, miniLng, realLat, realLng) {
 }
 
 const Distance = computed(() => {
-  const meters = haversineDistance(miniLat, miniLng, realLat, realLng)
-  return meters.toFixed(2) + ' metros'
+  return haversineDistance(miniLat, miniLng, realLat, realLng).toFixed(2)
 })
 
-const rawDistance = computed(() => {
-  return haversineDistance(miniLat, miniLng, realLat, realLng)
+onMounted(() => {
+  meters.value += Number(Distance.value)
 })
 
-const Score = computed(() => {
-  const distance = rawDistance.value
-
-  if (typeof distance !== 'number' || isNaN(distance)) return 0
-
-  const maxScore = 5000
-  const threshold = 50
-  const k = 0.0005
-
-  if (distance <= threshold) {
-    return maxScore
-  }
-
-  const adjustedDistance = distance - threshold
-  const score = maxScore * Math.exp(-k * adjustedDistance)
-  if (!timedOut) {
-    sum_score = sum_score + Score.value
-  }
-
-  return Math.round(score)
-})
-sum_score = sum_score + (Score.value)
 function NextRound() {
   router.push({
     path: "/PlayGame",
     query: {
       round: round + 1,
-      score: sum_score,
       gamemode: route.query.gamemode,
-      used: route.query.used
+      used: route.query.used,
+      meters: meters.value.toFixed(2) 
     }
   })
 }
 
 function PlayAgain() {
-  sum_score = 0
   round = 0
   router.push({
     path: "/PlayGame",
@@ -128,6 +103,16 @@ function BackMenu() {
     path: "/",
   })
 }
+
+const formattedDistance = computed(() => {
+  const value = meters.value;
+  if (value >= 1000) {
+    return `${(value / 1000).toFixed(2)} kilómetros`;
+  } else {
+    return `${value.toFixed(2)} metros`;
+  }
+});
+
 
 </script>
 
@@ -155,7 +140,6 @@ function BackMenu() {
       }">
         <template #title>Puntaje</template>
         <template #content>
-          <p class="m-0">Tu puntaje: {{ Score }}</p>
           <p class="m-0">Distancia: {{ Distance }}</p>
         </template>
       </Card>
@@ -205,7 +189,7 @@ function BackMenu() {
       }">
         <template #title>Resultados Finales</template>
         <template #content>
-          <p>{{ sum_score }}</p>
+          <p>{{ formattedDistance }}</p>
           <div>
             <Button label="Volver a jugar" @click="PlayAgain" style="margin-top: 1rem; width: 100%;"></Button>
             <Button label="Volver al menú" @click="BackMenu" style="margin-top: 1rem; width: 100%;"></Button>

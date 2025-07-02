@@ -10,12 +10,12 @@ const router = useRouter();
 const route = useRoute();
 
 const round = ref(parseInt(route.query.round) || 1);
-const score = ref(parseInt(route.query.score) || 0);
 const gamemode = ref(route.query.gamemode || "Normal");
 const usedCoords = ref([]);
 const initialCoord = ref(null);
 const reloadCounter = ref(0);
 const timeExpired = ref(false)
+const meters = ref(parseFloat(route.query.meters) || 0);
 
 const countdown = ref(180)
 let countdownInterval = null
@@ -87,9 +87,9 @@ function handleGuessClick(position) {
             realLat: realCoord.value.lat,
             realLng: realCoord.value.lng,
             round: round.value,
-            score: score.value,
             gamemode: gamemode.value,
-            used: JSON.stringify(usedCoords.value)
+            used: JSON.stringify(usedCoords.value),
+            meters: meters.value.toFixed(2)
             }
     });
 }
@@ -105,7 +105,6 @@ function redirectToInitial() {
         path: '/PlayGame',
         query: {
             round: round.value,
-            score: score.value,
             gamemode: gamemode.value,
             used: JSON.stringify(usedCoords.value),
             initialLat: initialCoord.value.lat,
@@ -178,6 +177,7 @@ function BackToMenu() {
         <StreetView :gamemode="gamemode" :realCoord="realCoord" @guessClick="handleGuessClick" />
 
         <div
+        v-if="gamemode !== 'Sin movimiento'"
         :style="{
             position: 'absolute',
             bottom: '8px',
@@ -194,6 +194,25 @@ function BackToMenu() {
         >
             Volver al Inicio
         </Button>
+        </div>
+        <div
+        :style="{
+            position: 'absolute',
+            top: '8px',
+            left: '8px',
+            zIndex: 100
+        }"
+        >
+        <Button
+            :style="{
+            backgroundColor: 'white'}"
+            icon="pi pi-times"
+            severity="danger"
+            rounded
+            text
+            @click="BackToMenu"
+            aria-label="Cerrar"
+        ></Button>
         </div>
 
         <div
