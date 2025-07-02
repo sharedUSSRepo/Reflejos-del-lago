@@ -37,7 +37,7 @@ const {lat, lon} = random_location(-41.4693, -72.94237, 15000);
 console.log(`Coordenada aleatoria: lat=${lat}, lon=${lon}`);
 
 async function checkStreetView(lat, lon) {
-    const url = `https://maps.googleapis.com/maps/api/streetview/metadata?location=${lat},${lon}&radius=1000&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`;
+    const url = `https://maps.googleapis.com/maps/api/streetview/metadata?location=${lat},${lon}&radius=1000&key=${process.env.GOOGLE_MAPS_API_KEY}`;
     const response = await fetch(url);
     const data = await response.json();
     console.log(`Respuesta Street View: ${data.status}`);
