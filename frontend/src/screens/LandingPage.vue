@@ -59,7 +59,8 @@
     <div class="relative min-h-screen">
 
         <!-- 360° background -->
-        <!-- <ThreeSixtyView image="example3" class="absolute inset-0 pointer-events-none w-full h-full opacity-50" /> -->
+        <ThreeSixtyView v-if="show360" image="example4"
+            class="absolute inset-0 pointer-events-none w-full h-full opacity-50" />
         <div class="absolute top-2 right-2 z-20">
             <Avatar icon="pi pi-user" class="cursor-pointer bg-green-500 text-white" size="large" shape="circle"
                 @click="openPosition" />
@@ -219,12 +220,15 @@ import Message from 'primevue/message';
 import Avatar from 'primevue/avatar';
 // import { leaderboard } from '@/data/leaderboard';
 // import ThreeSixtyView from '../components/ThreeSixtyView.vue'
+import { defineAsyncComponent } from 'vue';
 import axios from 'axios'
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick  } from 'vue';
 // import ColumnGroup from 'primevue/columngroup';   // optional
 // import Row from 'primevue/row';   
 
+const ThreeSixtyView = defineAsyncComponent(() => import('../components/ThreeSixtyView.vue'));
 let leaderboard = ref([])
+const show360 = ref(false);
 const loginRegisterVisible = ref(false);
 const username = ref('');
 const password = ref('');
@@ -232,9 +236,15 @@ const isLoginScreen = ref(true);
 const currentUser = ref(null);
 const errorMessage = ref('');
 
-onMounted(() => {
+onMounted(async () => {
     loadLeaderboard();
     getUserData();
+
+    await nextTick();
+
+    setTimeout(() => {
+        show360.value = true;
+    }, 300);
 });
 
 const openPosition = () => {
