@@ -2,8 +2,9 @@ var mongoose = require("mongoose");
 
 const init = async () => {
   try {
-    console.log(process.env.DB_URL);
-    await mongoose.connect(process.env.DB_URL);
+    const uri = process.env.DB_URL
+    console.log(uri);
+    await mongoose.connect(uri);
     console.log("connected");
   } catch (err) {
     console.error("error: " + err.stack);

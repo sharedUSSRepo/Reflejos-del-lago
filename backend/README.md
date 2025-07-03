@@ -1,7 +1,17 @@
 # Backend
-this is the backend.
+This is the backend of the app. It works ussing express.
 
-make sure you have an .env file that contains the following:
+## Requirements
+- pnpm
+- a Google Maps Api Key
+
+## Setup
+first install the packages using pnpm
+```bash
+pnpm install
+```
+
+Then, make sure you have an .env file that contains the following:
 ```bash
 DB_URL="your_server_url"
 GOOGLE_MAPS_API_KEY="your_google_maps_api_key"
@@ -13,9 +23,15 @@ if run localy, the db url could be something like:
 DB_URL="mongodb://localhost:27017"
 ```
 
+## Run the backend
+To run the backend, just do:
+```bash
+pnpm run serve
+```
+
 ## Populate database
 to populate the database, there are some initial scipt that would do that. Go to `./helpers` and there run
 ```bash
-node populateLeaderboard.js
+node populateCoordinates.js
 ```
 or the populate you want.

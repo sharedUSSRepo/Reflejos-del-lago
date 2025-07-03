@@ -12,4 +12,6 @@ RUN pnpm install
 
 COPY . .
 
-ENTRYPOINT ["./entrypoint.sh"]
+EXPOSE 3000
+
+CMD ["pnpm", "run", "serve"]

@@ -1,4 +1,4 @@
-export const alotofCoords = [
+const alotofCoords = [
   {
     "cityname": "Calbuco",
     "latitude": -41.64882194429283,
@@ -27800,3 +27800,5 @@ export const alotofCoords = [
     "longitude": -73.08434623667277
   }
 ];
+
+module.exports = { alotofCoords };

@@ -15,6 +15,7 @@ mongoose.connection.once("open", () => {
             .then(() => {
             allcoordinates.find({}).then((res) => {
                 console.log(res);
+                mongoose.connection.close();
             });
             });
         });
