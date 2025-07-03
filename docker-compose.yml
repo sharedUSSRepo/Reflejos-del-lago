@@ -6,9 +6,11 @@ services:
       - "8080:8080"
     depends_on:
       - backend
+    env_file:
+      - ./frontend/.env
     volumes:
       - ./frontend:/app
-    command: pnpm run dev
+    command: pnpm run serve
 
   backend:
     build:
@@ -21,7 +23,6 @@ services:
       - ./backend/.env
     depends_on:
       - mongo
-    command: pnpm run dev
 
   mongo:
     image: mongo:6
